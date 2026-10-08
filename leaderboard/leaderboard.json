@@ -1,0 +1,58 @@
+[
+  {
+    "solver": "first_fit_decreasing",
+    "run": "68871ee927a145e38400587f2884db74",
+    "group": "0d6fd204900a2c093a6bfe575917273685eaa4724175c05e7076429c2ca75aef",
+    "source": "cc3e859eacef5c85bd81bc246a1788a09a3de6983cb58071a0b7799109287f46",
+    "commit": "ce60f6b212903decc67824e485fb4ee7ad6900f6",
+    "dirty": false,
+    "status": "valid",
+    "cases": 216,
+    "bins": 2517,
+    "bound": 2274,
+    "seconds": 15.370473740001216,
+    "evidence": "local-development"
+  },
+  {
+    "solver": "best_fit_decreasing",
+    "run": "68871ee927a145e38400587f2884db74",
+    "group": "0d6fd204900a2c093a6bfe575917273685eaa4724175c05e7076429c2ca75aef",
+    "source": "cc3e859eacef5c85bd81bc246a1788a09a3de6983cb58071a0b7799109287f46",
+    "commit": "ce60f6b212903decc67824e485fb4ee7ad6900f6",
+    "dirty": false,
+    "status": "valid",
+    "cases": 216,
+    "bins": 2520,
+    "bound": 2274,
+    "seconds": 14.494168363000426,
+    "evidence": "local-development"
+  },
+  {
+    "solver": "first_fit",
+    "run": "68871ee927a145e38400587f2884db74",
+    "group": "0d6fd204900a2c093a6bfe575917273685eaa4724175c05e7076429c2ca75aef",
+    "source": "cc3e859eacef5c85bd81bc246a1788a09a3de6983cb58071a0b7799109287f46",
+    "commit": "ce60f6b212903decc67824e485fb4ee7ad6900f6",
+    "dirty": false,
+    "status": "valid",
+    "cases": 216,
+    "bins": 2826,
+    "bound": 2274,
+    "seconds": 13.780884685994351,
+    "evidence": "local-development"
+  },
+  {
+    "solver": "randomized_best_fit",
+    "run": "68871ee927a145e38400587f2884db74",
+    "group": "0d6fd204900a2c093a6bfe575917273685eaa4724175c05e7076429c2ca75aef",
+    "source": "cc3e859eacef5c85bd81bc246a1788a09a3de6983cb58071a0b7799109287f46",
+    "commit": "ce60f6b212903decc67824e485fb4ee7ad6900f6",
+    "dirty": false,
+    "status": "ineligible",
+    "cases": 216,
+    "bins": null,
+    "bound": null,
+    "seconds": 34.04923941299967,
+    "evidence": "local-development"
+  }
+]
