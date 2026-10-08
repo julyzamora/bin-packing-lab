@@ -1,22 +1,23 @@
-# Research website
+# Research website on GitHub Pages
 
-Static research dashboard inspired by ECDSA.fail: comparison metrics, bins-used chart,
-quality/time chart, progress for identical comparison groups, leaderboard, and run details.
+The dashboard is served from this repository's `website/` directory.
+GitHub Actions performs benchmarking and publishes result data; GitHub Pages serves HTML, CSS, JavaScript and JSON.
 
-The site reads `website/data.json` from this public repository on load and refresh.
-If that fetch fails, it labels and uses the bundled snapshot. No credentials are embedded.
+## One-time activation
 
-`python scripts/export_site.py --archive` exports actual experiment records and saves
-compressed raw evidence. CI runs this after benchmarking and publishes the data from a
-separate job; the candidate execution job has read-only repository permissions. Old runs
-remain archived. Publishing is skipped if main advances during the run; artifacts still exist.
+In repository Settings → Pages → Build and deployment, select **GitHub Actions** as the source.
+Then run **Deploy research website** from Actions (or re-run the failed deployment).
+This setting needs repository administration access and cannot be enabled by the workflow's default token.
+The expected address after a successful deployment is https://julyzamora.github.io/bin-packing-lab/.
 
-Ranking requires complete feasible results for every instance/seed. Progress never mixes
-comparison groups. A single run is shown as one observation, not fabricated history.
+## Updates
 
-The deployed website has its own hosting checkout; its product source is mirrored here.
-Data-only updates do not require redeploying the website. UI changes require deployment.
-The website is initially owner-private; the GitHub repository and result feed are public.
+- Website changes on main deploy directly.
+- After the benchmark workflow finishes successfully, `workflow_run` deploys the latest committed data.
+- This completion trigger is necessary because commits made with `GITHUB_TOKEN` do not trigger ordinary push workflows.
+- PRs cannot deploy. The privileged deployment workflow checks out main, not untrusted PR artifacts, and serves static files without executing candidate code.
+- Data is loaded from relative `./data.json`, so it travels with each deployment and works under the repository URL prefix.
+- Benchmark evidence remains in `docs/experiments/runs/`; scores are not stored in a separate database.
 
-There is no login, public submission endpoint, or automatic research-agent dispatcher.
-Contributions currently go through repository pull requests.
+The older owner-private hosted copy stays available during migration. This Pages site will be public, matching the public repository.
+No secrets or private inputs are present in the website bundle. There is no submission API or agent dispatcher.

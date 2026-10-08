@@ -4,7 +4,7 @@ A separate algorithm-research repository with reproducible benchmarks and a gene
 Organized like CoW Solver Lab, with a problem-specific evaluator and an ECDSA.fail-style
 submit → validate → compare → retain loop. No CoW code or private research records are copied.
 
-**[Open research website](https://bin-packing-lab.lucky-pony-0135.chatgpt.site)** (owner access) · [Markdown leaderboard](leaderboard/LEADERBOARD.md) · [Website source](website/) · [Research protocol](docs/research/RESEARCH_LOOP.md)
+**[Research website setup](website/README.md)** (GitHub Pages) · [Markdown leaderboard](leaderboard/LEADERBOARD.md) · [Website source](website/) · [Research protocol](docs/research/RESEARCH_LOOP.md)
 · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION.md)
 
 ## Run
@@ -60,4 +60,4 @@ baselines are not implemented yet. See [roadmap](docs/ROADMAP.md).
 5. Review the exact commit and rerun on an independent runner before promotion.
 
 The GitHub Actions workflow uploads a downloadable HTML/Markdown/JSON leaderboard.
-The research website loads `website/data.json` from GitHub on open or refresh. Main-branch CI publishes updated data and compressed raw evidence automatically. A public submission API remains a separate future step.
+The research website is deployed by `.github/workflows/pages.yml` and loads its colocated `data.json`. Main-branch CI publishes updated data and compressed raw evidence; the successful benchmark completion then triggers Pages deployment. One-time Pages activation is described in `website/README.md`. A public submission API remains a separate future step.
