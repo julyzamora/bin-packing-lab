@@ -1,5 +1,20 @@
 # Bin Packing Lab
 
+## Quick start
+
+```sh
+pipx install 'git+https://github.com/julyzamora/bin-packing-lab.git'
+binpack clone
+cd bin-packing-lab
+binpack run
+binpack leaderboard
+```
+
+Use `binpack run <candidate>` to evaluate your solver and `binpack submit` to
+push a committed candidate branch and open its PR. See [CLI setup and submission](docs/CLI.md).
+Requires Python 3.11+, Git, Docker, and GitHub CLI for submission.
+
+
 A separate algorithm-research repository with reproducible benchmarks and a generated leaderboard.
 Organized like CoW Solver Lab, with a problem-specific evaluator and an ECDSA.fail-style
 submit → validate → compare → retain loop. No CoW code or private research records are copied.

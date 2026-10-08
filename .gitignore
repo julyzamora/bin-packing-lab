@@ -7,3 +7,6 @@ data/development.json
 runs/candidates/
 incoming/
 incoming-queue.json
+*.egg-info/
+build/
+dist/
