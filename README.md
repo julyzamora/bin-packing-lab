@@ -4,7 +4,7 @@ A separate algorithm-research repository with reproducible benchmarks and a gene
 Organized like CoW Solver Lab, with a problem-specific evaluator and an ECDSA.fail-style
 submit → validate → compare → retain loop. No CoW code or private research records are copied.
 
-**[View leaderboard](leaderboard/LEADERBOARD.md)** · [Website source](website/) · [Research protocol](docs/research/RESEARCH_LOOP.md)
+**[Open research website](https://bin-packing-lab.lucky-pony-0135.chatgpt.site)** (owner access) · [Markdown leaderboard](leaderboard/LEADERBOARD.md) · [Website source](website/) · [Research protocol](docs/research/RESEARCH_LOOP.md)
 · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION.md)
 
 ## Run
