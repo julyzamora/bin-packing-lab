@@ -4,7 +4,7 @@ A separate algorithm-research repository with reproducible benchmarks and a gene
 Organized like CoW Solver Lab, with a problem-specific evaluator and an ECDSA.fail-style
 submit → validate → compare → retain loop. No CoW code or private research records are copied.
 
-**[View leaderboard](leaderboard/LEADERBOARD.md)** · [Research protocol](docs/research/RESEARCH_LOOP.md)
+**[View leaderboard](leaderboard/LEADERBOARD.md)** · [Website source](website/) · [Research protocol](docs/research/RESEARCH_LOOP.md)
 · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION.md)
 
 ## Run
@@ -60,4 +60,4 @@ baselines are not implemented yet. See [roadmap](docs/ROADMAP.md).
 5. Review the exact commit and rerun on an independent runner before promotion.
 
 The GitHub Actions workflow uploads a downloadable HTML/Markdown/JSON leaderboard.
-Publishing a live website and a public submission API are separate deployment steps.
+The research website loads `website/data.json` from GitHub on open or refresh. Main-branch CI publishes updated data and compressed raw evidence automatically. A public submission API remains a separate future step.

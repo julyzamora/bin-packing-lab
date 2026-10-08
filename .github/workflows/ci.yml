@@ -33,6 +33,7 @@ jobs:
       - run: python -m bin_packing_lab synthetic data/development.json --count 8 --seed 17
       - run: python -m bin_packing_lab benchmark data/development.json --state runs/research
       - run: python -m bin_packing_lab leaderboard --state runs/research --output leaderboard
+      - run: python scripts/export_site.py --archive
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -41,4 +42,45 @@ jobs:
             leaderboard/
             runs/research/
             data/development.json
+            website/data.json
+            docs/experiments/runs/
           retention-days: 30
+
+  publish-data:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: development-leaderboard
+          path: evidence
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const {owner, repo} = context.repo;
+            const head = await github.rest.git.getRef({owner, repo, ref:'heads/main'});
+            if (head.data.object.sha !== context.sha) {
+              core.notice('Main advanced; retaining this run as an artifact without overwriting newer data.');
+              return;
+            }
+            const parent = await github.rest.git.getCommit({owner, repo, commit_sha:context.sha});
+            const data = fs.readFileSync('evidence/website/data.json','utf8');
+            if (JSON.parse(data).schema !== 1) throw new Error('Unsupported website data');
+            const tree = [{path:'website/data.json', mode:'100644', type:'blob', content:data}];
+            const dir = 'evidence/docs/experiments/runs';
+            for (const file of fs.readdirSync(dir)) {
+              if (!/^run-[a-f0-9]{32}\.json\.gz$/.test(file)) throw new Error('Invalid evidence filename');
+              const blob = await github.rest.git.createBlob({owner, repo,
+                content:fs.readFileSync(dir+'/'+file).toString('base64'), encoding:'base64'});
+              tree.push({path:'docs/experiments/runs/'+file, mode:'100644',type:'blob',sha:blob.data.sha});
+            }
+            const next = await github.rest.git.createTree({owner, repo, base_tree:parent.data.tree.sha, tree});
+            const commit = await github.rest.git.createCommit({owner, repo,
+              message:'Publish benchmark website data [skip ci]', tree:next.data.sha, parents:[context.sha]});
+            await github.rest.git.updateRef({owner, repo, ref:'heads/main',sha:commit.data.sha,force:false});
