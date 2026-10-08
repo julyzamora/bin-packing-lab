@@ -1,5 +1,3 @@
-import math
-
 
 def check_instance(instance):
     cap = instance['capacity']
@@ -38,5 +36,5 @@ def validate(instance, assignment, initial=None, max_moves=None):
 
 def lower_bound(instance):
     check_instance(instance)
-    return max(math.ceil(sum(x[d] for x in instance['items']) / c)
+    return max((sum(x[d] for x in instance['items']) + c - 1) // c
                for d, c in enumerate(instance['capacity']))

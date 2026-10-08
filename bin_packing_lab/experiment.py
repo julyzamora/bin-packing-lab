@@ -48,7 +48,8 @@ def suite(path, seed=17, count=8):
 
 def source_state():
     files = {str(p.relative_to(ROOT)): p.read_text()
-             for p in sorted((ROOT/'bin_packing_lab').glob('*.py'))}
+             for p in sorted(list((ROOT/'bin_packing_lab').glob('*.py')) +
+                             list((ROOT/'evaluation').glob('*'))) if p.is_file()}
     def git(*args):
         r = subprocess.run(['git', '-C', str(ROOT), *args], capture_output=True, text=True)
         return r.stdout.strip() if r.returncode == 0 else None

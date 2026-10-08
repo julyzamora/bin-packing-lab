@@ -13,6 +13,7 @@ def export(state, output, archive=False):
     records = {}
     paths = list((ROOT/'docs/experiments').rglob('*run*.json.gz'))
     paths += list(Path(state).glob('*.json'))
+    paths += list((ROOT/'runs/candidates').glob('*.json'))
     for path in paths:
         raw = gzip.decompress(path.read_bytes()) if path.suffix == '.gz' else path.read_bytes()
         record = json.loads(raw)
@@ -24,13 +25,14 @@ def export(state, output, archive=False):
             target.parent.mkdir(parents=True, exist_ok=True)
             if not target.exists():
                 target.write_bytes(gzip.compress(raw, mtime=0))
-    result = []
+    result, candidates = [], []
     for record in sorted(records.values(), key=lambda r: r['created_at']):
         item = {k: v for k, v in record.items() if k != 'rows'}
         item['rows'] = [{k: v for k, v in row.items() if k != 'assignment'} for row in record['rows']]
-        result.append(item)
+        (candidates if 'candidate' in record else result).append(item)
     data = {'schema':1, 'repository':'julyzamora/bin-packing-lab',
-            'generated_at':datetime.now(timezone.utc).isoformat(), 'runs':result}
+            'generated_at':datetime.now(timezone.utc).isoformat(), 'runs':result,
+            'candidate_runs': candidates}
     Path(output).parent.mkdir(parents=True, exist_ok=True)
     Path(output).write_text(json.dumps(data, separators=(',', ':'))+'\n')
     return data

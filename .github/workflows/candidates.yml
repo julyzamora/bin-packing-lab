@@ -1,0 +1,56 @@
+name: Candidate evaluation
+on:
+  pull_request:
+    paths:
+      - 'candidates/**'
+      - 'research/experiments/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: candidate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Extract candidate blobs without running PR code
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          git fetch origin "refs/pull/$PR_NUMBER/head"
+          test "$(git rev-parse FETCH_HEAD)" = "$HEAD_SHA"
+          python scripts/prepare_candidates.py
+      - name: Build trusted runtime
+        run: |
+          docker build --tag bin-packing-evaluator:1 evaluation
+          echo "EVALUATOR_IMAGE_ID=$(docker image inspect bin-packing-evaluator:1 --format '{{.Id}}')" >> "$GITHUB_ENV"
+      - name: Check isolation
+        run: RUN_CONTAINER_TESTS=1 python -m unittest tests.test_container -v
+      - name: Evaluate submitted candidates
+        if: github.event_name == 'pull_request'
+        run: python -m bin_packing_lab.research --queue incoming-queue.json --candidates incoming --max-experiments 3 --require-improvement
+      - name: Evaluate control queue
+        if: github.event_name == 'workflow_dispatch'
+        run: python -m bin_packing_lab.research --max-experiments 1 --report-only
+      - name: Write review summary
+        if: always()
+        run: python scripts/candidate_summary.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: runs/candidates/*.json
+          retention-days: 90

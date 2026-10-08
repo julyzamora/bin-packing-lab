@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "experiments": [{
+    "id": "best-fit-control",
+    "candidate": "best_fit",
+    "hypothesis": "Control experiment: reproduce the trusted best-fit baseline without claiming an improvement."
+  }]
+}

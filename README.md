@@ -61,3 +61,7 @@ baselines are not implemented yet. See [roadmap](docs/ROADMAP.md).
 
 The GitHub Actions workflow uploads a downloadable HTML/Markdown/JSON leaderboard.
 The research website is deployed by `.github/workflows/pages.yml` and loads its colocated `data.json`. Main-branch CI publishes updated data and compressed raw evidence; the successful benchmark completion then triggers Pages deployment. One-time Pages activation is described in `website/README.md`. A public submission API remains a separate future step.
+
+## Candidate submissions
+
+The [submission protocol](docs/research/SUBMISSIONS.md) adds pre-merge container evaluation, matched development/validation splits, exact tiny-case diagnostics, and a resumable bounded experiment queue. Submit algorithms under `candidates/<name>/solver.py`; infrastructure changes are reviewed separately.

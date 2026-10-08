@@ -22,7 +22,7 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: test
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +33,13 @@ jobs:
       - run: python -m bin_packing_lab synthetic data/development.json --count 8 --seed 17
       - run: python -m bin_packing_lab benchmark data/development.json --state runs/research
       - run: python -m bin_packing_lab leaderboard --state runs/research --output leaderboard
+      - run: docker build --tag bin-packing-evaluator:1 evaluation
+      - run: RUN_CONTAINER_TESTS=1 python -m unittest tests.test_container -v
+      - name: Evaluate merged candidates
+        run: |
+          python scripts/merged_queue.py
+          export EVALUATOR_IMAGE_ID="$(docker image inspect bin-packing-evaluator:1 --format '{{.Id}}')"
+          python -m bin_packing_lab.research --queue runs/merged-queue.json --max-experiments 10 --report-only
       - run: python scripts/export_site.py --archive
       - uses: actions/upload-artifact@v4
         if: always()
@@ -41,6 +48,7 @@ jobs:
           path: |
             leaderboard/
             runs/research/
+            runs/candidates/
             data/development.json
             website/data.json
             docs/experiments/runs/

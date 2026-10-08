@@ -27,3 +27,7 @@ worker crashes, a candidate is invalid, or a direction fails to improve.
 
 The current development ledger is append-only by convention on disk, not tamper-proof storage.
 Public acceptance will require CI-owned provenance, evaluator hashes and a service identity.
+
+## Candidate evaluation v2
+
+See [submission protocol](research/SUBMISSIONS.md) for the implemented pre-merge evaluation path, restricted containers, public validation split, exact tiny-case diagnostics, bounded queue controller, and remaining repository-settings requirements. This supersedes earlier descriptions of candidate evaluation as entirely planned.

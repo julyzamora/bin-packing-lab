@@ -31,3 +31,7 @@ Threat model: local reviewed Python baselines only. Process timeouts are resourc
 not hostile-code isolation. A public submission service must use a locked evaluator, separate
 build and scoring privileges, restricted candidate files, a disposable sandbox and externally
 recorded results. PR CI is read-only and does not publish leaderboard rankings.
+
+## Candidate evaluation v2
+
+See [submission protocol](research/SUBMISSIONS.md) for the implemented pre-merge evaluation path, restricted containers, public validation split, exact tiny-case diagnostics, bounded queue controller, and remaining repository-settings requirements. This supersedes earlier descriptions of candidate evaluation as entirely planned.

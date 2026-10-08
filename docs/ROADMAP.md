@@ -10,3 +10,7 @@
 
 The repo starts with a functioning development benchmark and leaderboard, not claims that
 the advanced algorithms or autonomous controller above already exist.
+
+## Candidate evaluation v2
+
+See [submission protocol](research/SUBMISSIONS.md) for the implemented pre-merge evaluation path, restricted containers, public validation split, exact tiny-case diagnostics, bounded queue controller, and remaining repository-settings requirements. This supersedes earlier descriptions of candidate evaluation as entirely planned.

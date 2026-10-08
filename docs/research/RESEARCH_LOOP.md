@@ -11,7 +11,7 @@
 
 Each task ends with evidence and a next action. A failed result can close a hypothesis;
 a build failure is an infrastructure outcome, not a negative algorithm result. Distinguish
-these in notes. Hypothesis queues and coding-agent dispatch are not automated in v1.
+these in notes. A bounded queue evaluator is implemented; coding-agent dispatch remains unimplemented. See [submission protocol](SUBMISSIONS.md).
 
 Suggested roles: researcher identifies a mechanism and cheap falsifier; implementer supplies
 code; independent evaluator checks feasibility and matched performance. One agent may do
