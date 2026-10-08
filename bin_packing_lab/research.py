@@ -19,6 +19,11 @@ IMAGE = 'bin-packing-evaluator:1'
 PROTOCOL = 2
 
 
+def runtime():
+    return {'image_id': os.environ.get('EVALUATOR_IMAGE_ID', 'unrecorded'),
+            'python': platform.python_version(), 'platform': platform.platform()}
+
+
 def exact_bins(case):
     """Exhaustive branch-and-bound oracle, restricted to <= 10 items."""
     if len(case['items']) > 10:
@@ -126,7 +131,7 @@ def decision(rows):
 def evaluate(source, candidate, output, hypothesis='', trial=container_trial):
     data = suites()
     protocol = {'evaluation_version': PROTOCOL, 'suite_sha256': digest(data),
-                'timeout_seconds': 5, 'seeds': [0, 1], 'image': IMAGE}
+                'timeout_seconds': 5, 'seeds': [0, 1], 'image': IMAGE, 'runtime': runtime()}
     rows = []
     record = {'schema': 1, 'run_id': uuid.uuid4().hex,
               'candidate': candidate, 'hypothesis': hypothesis,
@@ -195,7 +200,7 @@ def main():
             raise ValueError('candidate must be a regular source file <=64 KiB')
         source = path.read_bytes()
         key = digest({'source': source.hex(), 'task': task, 'evaluator': source_state()['source_sha256'],
-                      'protocol': PROTOCOL, 'suites': suites()})
+                      'protocol': PROTOCOL, 'suites': suites(), 'runtime': runtime()})
         marker = Path(args.state)/(key+'.done')
         if marker.exists():
             status = json.loads(Path(marker.read_text()).read_text())['status']
