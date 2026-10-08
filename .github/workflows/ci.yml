@@ -1,0 +1,44 @@
+name: Tests and development benchmark
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -v
+  benchmark:
+    if: github.event_name != 'pull_request'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m bin_packing_lab synthetic data/development.json --count 8 --seed 17
+      - run: python -m bin_packing_lab benchmark data/development.json --state runs/research
+      - run: python -m bin_packing_lab leaderboard --state runs/research --output leaderboard
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: development-leaderboard
+          path: |
+            leaderboard/
+            runs/research/
+            data/development.json
+          retention-days: 30

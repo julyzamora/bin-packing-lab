@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "directions": [
+    {"id":"greedy", "state":"baseline-implemented", "question":"Which ordering and placement rules help each instance family?"},
+    {"id":"evacuation", "state":"planned", "question":"Can coordinated moves empty a bin when single moves cannot?"},
+    {"id":"beam", "state":"planned", "question":"Does retaining multiple partial packings improve quality under fixed time?"},
+    {"id":"alns", "state":"planned", "question":"Which destroy/repair neighborhoods improve existing packings?"},
+    {"id":"exact", "state":"planned", "question":"How far are small instances from optimal, and do local exact repairs help?"}
+  ]
+}
